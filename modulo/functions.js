@@ -4,7 +4,6 @@
  * Autor: Mateus Alves da Silva
  * Versão: 1.0
  *****************************/
-
 var listaAlunos = require('./alunos.js')
 var listaCursos = require('./cursos.js')
 
@@ -54,27 +53,26 @@ const getDetalhesAluno = function (matriculaAluno) {
 
     listaAlunos.alunos.forEach(function (aluno) {
         if (matriculaAluno == matricula) {
-            novoArray.foto = aluno.foto,
+                novoArray.foto = aluno.foto,
                 novoArray.nome = aluno.nome,
                 novoArray.matricula = aluno.matricula,
-                novoArray.sexo = aluno.sexo,
+                novoArray.sexo = aluno.sexo
 
-                aluno.curso.forEach(function (curso) {
-                    novoArray.curso = curso
+            aluno.curso.forEach(function (dadosCurso) {
+                novoArray.curso = dadosCurso
 
-                    curso.disciplinas.forEach(function (dadosDisciplinas) {
-                        arrayDisciplina.disciplinas = dadosDisciplinas
-                        novoArray.curso.disciplinas = arrayDisciplina
+                dadosCurso.disciplinas.forEach(function (dadosDisciplinas) {
+                    arrayDisciplina.disciplinas = dadosDisciplinas
+                    novoArray.curso.disciplinas = arrayDisciplina
+                    novoArray.status = aluno.status
 
-                        novoArray.status = aluno.status
-
-                        situacao = true
-                    })
+                    situacao = true
                 })
+            })
         }
     })
 
-    novoJson.aluno = novoArray
+    novoJson.alunos = novoArray
 
     if (situacao == true) {
         return novoJson
@@ -91,7 +89,7 @@ const getAlunosPorCurso = function (cursoEscolhido) {
 
     listaAlunos.alunos.forEach(function (aluno) {
         aluno.curso.forEach(function (curso) {
-            if (curso.sigla.toUpperCase() == cursoSigla.toUpperCase()) {
+            if (curso.sigla.toUpperCase() == cursoSigla) {
                 let jsonAluno = {}
                 jsonAluno.foto = aluno.foto,
                     jsonAluno.nome = aluno.nome,
@@ -99,10 +97,10 @@ const getAlunosPorCurso = function (cursoEscolhido) {
                     jsonAluno.matricula = aluno.matricula,
                     jsonAluno.curso = curso.nome,
                     jsonAluno.sigla = curso.sigla
-                status = true
-
-                novoArray.push(jsonAluno)
+                    
+                    novoArray.push(jsonAluno)
             }
+            status = true
         })
     })
     novoJson.alunos = novoArray
@@ -118,20 +116,20 @@ const getAlunosPorStatus = function (statusAluno) {
     let novoJson = {}
     let novoArray = []
     let situacao = false
-    let status = statusAluno.toUpperCase()
+    let status = statusAluno
 
     listaAlunos.alunos.forEach(function (aluno) {
-        if (aluno.status.toUpperCase() == status.toUpperCase()) {
+        if (aluno.status == status) {
             let jsonAluno = {}
             jsonAluno.foto = aluno.foto,
                 jsonAluno.nome = aluno.nome,
                 jsonAluno.sexo = aluno.sexo,
                 jsonAluno.matricula = aluno.matricula,
                 jsonAluno.status = aluno.status
-            situacao = true
-
-            novoArray.push(jsonAluno)
+                novoArray.push(jsonAluno)
         }
+       
+        situacao = true
     })
     novoJson.alunos = novoArray
 
@@ -141,6 +139,7 @@ const getAlunosPorStatus = function (statusAluno) {
         return situacao
     }
 }
+
 
 module.exports = {
     getCursos,
