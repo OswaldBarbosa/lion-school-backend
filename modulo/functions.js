@@ -4,8 +4,10 @@
  * Autor: Mateus Alves da Silva
  * Versão: 1.0
  *****************************/
+
 var listaAlunos = require('./alunos.js')
 var listaCursos = require('./cursos.js')
+
 const getCursos = function () {
     let novoJson = {}
     let novoArray = []
@@ -52,23 +54,23 @@ const getDetalhesAluno = function (matriculaAluno) {
 
     listaAlunos.alunos.forEach(function (aluno) {
         if (matriculaAluno == matricula) {
-                novoArray.foto = aluno.foto,
+            novoArray.foto = aluno.foto,
                 novoArray.nome = aluno.nome,
                 novoArray.matricula = aluno.matricula,
                 novoArray.sexo = aluno.sexo,
 
-            aluno.curso.forEach(function (curso) {
-                novoArray.curso = curso
+                aluno.curso.forEach(function (curso) {
+                    novoArray.curso = curso
 
-                curso.disciplinas.forEach(function (dadosDisciplinas) {
-                    arrayDisciplina.disciplinas = dadosDisciplinas
-                    novoArray.curso.disciplinas = arrayDisciplina
+                    curso.disciplinas.forEach(function (dadosDisciplinas) {
+                        arrayDisciplina.disciplinas = dadosDisciplinas
+                        novoArray.curso.disciplinas = arrayDisciplina
 
-                    novoArray.status = aluno.status
+                        novoArray.status = aluno.status
 
-                    situacao = true
+                        situacao = true
+                    })
                 })
-            })
         }
     })
 
