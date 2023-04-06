@@ -6,6 +6,7 @@
  *****************************/
 var listaAlunos = require('./alunos.js')
 var listaCursos = require('./cursos.js')
+const cursos = require('./cursos.js')
 
 const getCursos = function () {
     let novoJson = {}
@@ -45,39 +46,43 @@ const getAlunosMatriculados = function () {
 }
 
 const getDetalhesAluno = function (matriculaAluno) {
-    let novoArray = []
     let novoJson = {}
-    let arrayDisciplina = []
-    let situacao = false
+    let novoArray = []
+    let arrayDisciplinas = []
+    let status = false
     let matricula = matriculaAluno
+    
+    listaAlunos.alunos.forEach(function (aluno){
+        if(aluno.matricula == matricula){
+        let jsonAluno = {}
+        jsonAluno.foto = aluno.foto,
+        jsonAluno.nome = aluno.nome,
+        jsonAluno.matricula = aluno.matricula,
+        jsonAluno.sexo = aluno.sexo
+        aluno.curso.forEach(function (curso){
+            jsonAluno.curso = curso.nome,
+            jsonAluno.sigla  = curso.sigla
+            curso.disciplinas.forEach(function (disciplinas){
+                let jsonDisciplinas = {}
+                jsonDisciplinas.nome = disciplinas.nome,
+                jsonDisciplinas.carga = disciplinas.carga,
+                jsonDisciplinas.media = disciplinas.media
 
-    listaAlunos.alunos.forEach(function (aluno) {
-        if (matriculaAluno == matricula) {
-                novoArray.foto = aluno.foto,
-                novoArray.nome = aluno.nome,
-                novoArray.matricula = aluno.matricula,
-                novoArray.sexo = aluno.sexo
-
-            aluno.curso.forEach(function (dadosCurso) {
-                novoArray.curso = dadosCurso
-
-                dadosCurso.disciplinas.forEach(function (dadosDisciplinas) {
-                    arrayDisciplina.disciplinas = dadosDisciplinas
-                    novoArray.curso.disciplinas = arrayDisciplina
-                    novoArray.status = aluno.status
-
-                    situacao = true
-                })
+                arrayDisciplinas.push(jsonDisciplinas)
             })
+            jsonAluno.disciplinas = arrayDisciplinas
+        })
+        novoArray.push(jsonAluno)
+        status = true
         }
     })
 
-    novoJson.alunos = novoArray
+    novoJson.aluno = novoArray
 
-    if (situacao == true) {
+    if (status == true){
         return novoJson
-    } else {
-        return situacao
+    } else{
+        return status
     }
 }
 
@@ -89,7 +94,7 @@ const getAlunosPorCurso = function (cursoEscolhido) {
 
     listaAlunos.alunos.forEach(function (aluno) {
         aluno.curso.forEach(function (curso) {
-            if (curso.sigla.toUpperCase() == cursoSigla) {
+            if (curso.sigla.toUpperCase() == cursoSigla.toUpperCase()) {
                 let jsonAluno = {}
                 jsonAluno.foto = aluno.foto,
                     jsonAluno.nome = aluno.nome,
@@ -119,7 +124,7 @@ const getAlunosPorStatus = function (statusAluno) {
     let status = statusAluno
 
     listaAlunos.alunos.forEach(function (aluno) {
-        if (aluno.status == status) {
+        if (aluno.status.toUpperCase() == status.toUpperCase()) {
             let jsonAluno = {}
             jsonAluno.foto = aluno.foto,
                 jsonAluno.nome = aluno.nome,
