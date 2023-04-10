@@ -6,7 +6,26 @@
  *****************************/
 var listaAlunos = require('./alunos.js')
 var listaCursos = require('./cursos.js')
-const cursos = require('./cursos.js')
+
+const getSiglaDisciplina = function (nomeDisciplina) {
+    let palavra = nomeDisciplina
+    let ignorar = ['de', 'a']
+    let abreviacao = palavra.split(' ')
+    let sigla = ''
+    console.log(abreviacao)
+
+    if(abreviacao.length === 1){
+        sigla = abreviacao[0].slice(0, 2).toUpperCase()
+    }else {
+        for(let i = 0; i < abreviacao.length; i++){
+            let novaPalavra = abreviacao[i]
+            if (!ignorar.includes(novaPalavra)){
+                sigla += novaPalavra.charAt(0)
+            }
+        }
+    }
+    return sigla.toUpperCase()
+}
 
 const getCursos = function () {
     let novoJson = {}
@@ -54,18 +73,22 @@ const getDetalhesAluno = function (matriculaAluno) {
     
     listaAlunos.alunos.forEach(function (aluno){
         if(aluno.matricula == matricula){
+
         let jsonAluno = {}
         jsonAluno.foto = aluno.foto,
         jsonAluno.nome = aluno.nome,
         jsonAluno.matricula = aluno.matricula,
         jsonAluno.sexo = aluno.sexo
+
         aluno.curso.forEach(function (curso){
             jsonAluno.curso = curso.nome,
             jsonAluno.sigla  = curso.sigla
+
             curso.disciplinas.forEach(function (disciplinas){
                 let jsonDisciplinas = {}
                 jsonDisciplinas.nome = disciplinas.nome,
-                jsonDisciplinas.carga = disciplinas.carga,
+                jsonDisciplinas.sigla = getSiglaDisciplina(disciplinas.nome),
+                jsonDisciplinas.status = disciplinas.status,
                 jsonDisciplinas.media = disciplinas.media
 
                 arrayDisciplinas.push(jsonDisciplinas)
@@ -131,8 +154,6 @@ const getAlunosPorStatus = function (statusAluno) {
                 jsonAluno.sexo = aluno.sexo,
                 jsonAluno.matricula = aluno.matricula,
                 jsonAluno.status = aluno.status
-                jsonAluno.curso = aluno.curso[0].nome
-                jsonAluno.anoConclusao = aluno.curso[0].conclusao
                 novoArray.push(jsonAluno)
         }
        
@@ -146,7 +167,6 @@ const getAlunosPorStatus = function (statusAluno) {
         return situacao
     }
 }
-
 
 module.exports = {
     getCursos,
