@@ -154,6 +154,8 @@ const getAlunosPorStatus = function (statusAluno) {
                 jsonAluno.sexo = aluno.sexo,
                 jsonAluno.matricula = aluno.matricula,
                 jsonAluno.status = aluno.status
+                jsonAluno.curso = aluno.curso[0].nome
+                jsonAluno.dataConclusao = aluno.curso[0].conclusao
                 novoArray.push(jsonAluno)
         }
        
