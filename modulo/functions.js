@@ -125,7 +125,7 @@ const getAlunosPorCurso = function (cursoEscolhido) {
                     jsonAluno.matricula = aluno.matricula,
                     jsonAluno.curso = curso.nome,
                     jsonAluno.sigla = curso.sigla
-                    
+                    jsonAluno.status = curso.status
                     novoArray.push(jsonAluno)
             }
             status = true
