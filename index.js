@@ -62,23 +62,6 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
             alunos = funcoes.getAlunosPorStatus(status)
         }
 
-    } else if (curso != undefined && status != undefined) {
-        if (!isNaN(curso) || !isNaN(status)) {
-            statusCode = 400;
-            dadosCode.message = 'Curso ou Status inválidos';
-        } else {
-            let alunosCurso = func.getAlunosPorCurso(curso, listAlunos.alunos);
-            alunos = func.getAlunosPorStatus(status, alunosCurso.aluno);
-            if (alunos) {
-                statusCode = 200;
-                dadosCode = alunos;
-            } else {
-                statusCode = 404;
-                dadosCode.message = 'Curso ou Status inválido';
-            }
-
-        }
-
     } else {
         alunos = funcoes.getAlunosMatriculados()
     }
