@@ -39,33 +39,50 @@ app.get('/v1/lion-school/cursos', cors(), async function (request, response, nex
 app.get('/v1/lion-school/alunos', cors(), async function (request, response, next) {
     let dadosAluno = {}
     let statusCode
-    let alunos 
+    let alunos
 
     let status = request.query.status
     let curso = request.query.curso
 
-    if(curso){
+    if (curso) {
 
-        if(curso == '' || curso == undefined || !isNaN(curso)){
+        if (curso == '' || curso == undefined || !isNaN(curso)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
-        }else{
+        } else {
             alunos = funcoes.getAlunosPorCurso(curso)
         }
 
-    } else if(status){
+    } else if (status) {
 
-        if(status == '' || status == undefined || !isNaN(status)){
+        if (status == '' || status == undefined || !isNaN(status)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
-        }else{
+        } else {
             alunos = funcoes.getAlunosPorStatus(status)
         }
 
-    } else{
+    } else if (curso != undefined && status != undefined) {
+        if (!isNaN(curso) || !isNaN(status)) {
+            statusCode = 400;
+            dadosCode.message = 'Curso ou Status inválidos';
+        } else {
+            let alunosCurso = func.getAlunosPorCurso(curso, listAlunos.alunos);
+            alunos = func.getAlunosPorStatus(status, alunosCurso.aluno);
+            if (alunos) {
+                statusCode = 200;
+                dadosCode = alunos;
+            } else {
+                statusCode = 404;
+                dadosCode.message = 'Curso ou Status inválido';
+            }
+
+        }
+
+    } else {
         alunos = funcoes.getAlunosMatriculados()
     }
-    
+
     if (alunos) {
         statusCode = 200
         dadosAluno = alunos
@@ -84,16 +101,16 @@ app.get('/v1/lion-school/aluno/:matricula', cors(), async function (request, res
 
     let matriculaAluno = request.params.matricula
 
-    if(matriculaAluno == '' || matriculaAluno == undefined || matriculaAluno.length != 11 || isNaN(matriculaAluno)){
+    if (matriculaAluno == '' || matriculaAluno == undefined || matriculaAluno.length != 11 || isNaN(matriculaAluno)) {
         statusCode = 400
         dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio, precisa ser numeros e ter 11 dígitos,'
-    }else{
+    } else {
         let aluno = funcoes.getDetalhesAluno(matriculaAluno)
 
-        if(aluno){
+        if (aluno) {
             statusCode = 200
             dadosAluno = aluno
-        } else{
+        } else {
             statusCode = 400
         }
     }

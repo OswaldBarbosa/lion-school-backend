@@ -109,7 +109,7 @@ const getDetalhesAluno = function (matriculaAluno) {
     }
 }
 
-const getAlunosPorCurso = function (cursoEscolhido) {
+const getAlunosPorCurso = function (cursoEscolhido, listaAlunos) {
     let novoJson = {}
     let novoArray = []
     let status = false
@@ -140,7 +140,7 @@ const getAlunosPorCurso = function (cursoEscolhido) {
     }
 }
 
-const getAlunosPorStatus = function (statusAluno) {
+const getAlunosPorStatus = function (statusAluno, listaAlunos) {
     let novoJson = {}
     let novoArray = []
     let situacao = false
