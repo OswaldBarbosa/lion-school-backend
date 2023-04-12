@@ -7,11 +7,12 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
 const app = express()
+const { query } = require('express')
 
 const funcoes = require('./modulo/functions.js')
-const { query } = require('express')
+const listaDeAlunos = require('./modulo/alunos.js')
+const listaCursos = require('./modulo/cursos.js');
 
 app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*')
@@ -25,7 +26,6 @@ app.use((request, response, next) => {
 })
 
 app.get('/v1/lion-school/cursos', cors(), async function (request, response, next) {
-
     let cursos = funcoes.getCursos()
 
     if (cursos) {
@@ -46,11 +46,11 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
     //Filtrar por status
     if (status != undefined && curso == undefined) {
 
-        if (status == '' || !isNaN(status)) {
+        if (!isNaN(status)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
-            alunos = funcoes.getAlunosPorStatus(status)
+            alunos = funcoes.getAlunosStatus(status, listaDeAlunos.alunos)
         }
 
         if (alunos) {
@@ -60,14 +60,14 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
             statusCode = 400
         }
 
-    //Filtrar por curso
+        //Filtrar por curso
     } else if (curso != undefined && status == undefined) {
 
-        if (curso == '' || !isNaN(curso)) {
+        if (!isNaN(curso)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
-            alunos = funcoes.getAlunosPorCurso(curso)
+            alunos = funcoes.getAlunosPorCurso(curso, listaDeAlunos.alunos)
         }
 
         if (alunos) {
@@ -79,12 +79,12 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
 
     } else if (curso != undefined && status != undefined) {
 
-        if (status == '' || curso == '' || !isNaN(status) || !isNaN(curso)) {
+        if (!isNaN(status) || !isNaN(curso)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
-            alunos = funcoes.getAlunosPorStatus(status)
-            alunos = funcoes.getAlunosPorCurso(curso)
+            let alunosPorCurso = funcoes.getAlunosPorCurso(curso, listaDeAlunos.alunos);
+            alunos = funcoes.getAlunosPorStatus(status, alunosPorCurso.aluno);
         }
 
         if (alunos) {
@@ -135,5 +135,5 @@ app.get('/v1/lion-school/aluno/:matricula', cors(), async function (request, res
 })
 
 app.listen(8080, function () {
-    console.log('servidor aguardando requisições na porta 8080.')
+    console.log('Servidor aguardando requisições na porta 8080.')
 })

@@ -14,12 +14,12 @@ const getSiglaDisciplina = function (nomeDisciplina) {
     let sigla = ''
     console.log(abreviacao)
 
-    if(abreviacao.length === 1){
+    if (abreviacao.length === 1) {
         sigla = abreviacao[0].slice(0, 2).toUpperCase()
-    }else {
-        for(let i = 0; i < abreviacao.length; i++){
+    } else {
+        for (let i = 0; i < abreviacao.length; i++) {
             let novaPalavra = abreviacao[i]
-            if (!ignorar.includes(novaPalavra)){
+            if (!ignorar.includes(novaPalavra)) {
                 sigla += novaPalavra.charAt(0)
             }
         }
@@ -70,68 +70,36 @@ const getDetalhesAluno = function (matriculaAluno) {
     let arrayDisciplinas = []
     let status = false
     let matricula = matriculaAluno
-    
-    listaAlunos.alunos.forEach(function (aluno){
-        if(aluno.matricula == matricula){
 
-        let jsonAluno = {}
-        jsonAluno.foto = aluno.foto,
-        jsonAluno.nome = aluno.nome,
-        jsonAluno.matricula = aluno.matricula,
-        jsonAluno.sexo = aluno.sexo
+    listaAlunos.alunos.forEach(function (aluno) {
+        if (aluno.matricula == matricula) {
+            let jsonAluno = {}
+            jsonAluno.foto = aluno.foto,
+                jsonAluno.nome = aluno.nome,
+                jsonAluno.matricula = aluno.matricula,
+                jsonAluno.sexo = aluno.sexo
 
-        aluno.curso.forEach(function (curso){
-            jsonAluno.curso = curso.nome,
-            jsonAluno.sigla  = curso.sigla
+            aluno.curso.forEach(function (curso) {
+                jsonAluno.curso = curso.nome,
+                    jsonAluno.sigla = curso.sigla
 
-            curso.disciplinas.forEach(function (disciplinas){
-                let jsonDisciplinas = {}
-                jsonDisciplinas.nome = disciplinas.nome,
-                jsonDisciplinas.sigla = getSiglaDisciplina(disciplinas.nome),
-                jsonDisciplinas.status = disciplinas.status,
-                jsonDisciplinas.media = disciplinas.media
+                curso.disciplinas.forEach(function (disciplinas) {
+                    let jsonDisciplinas = {}
+                    jsonDisciplinas.nome = disciplinas.nome,
+                        jsonDisciplinas.sigla = getSiglaDisciplina(disciplinas.nome),
+                        jsonDisciplinas.status = disciplinas.status,
+                        jsonDisciplinas.media = disciplinas.media
 
-                arrayDisciplinas.push(jsonDisciplinas)
+                    arrayDisciplinas.push(jsonDisciplinas)
+                })
+                jsonAluno.disciplinas = arrayDisciplinas
             })
-            jsonAluno.disciplinas = arrayDisciplinas
-        })
-        novoArray.push(jsonAluno)
-        status = true
+            novoArray.push(jsonAluno)
+            status = true
         }
     })
 
     novoJson.aluno = novoArray
-
-    if (status == true){
-        return novoJson
-    } else{
-        return status
-    }
-}
-
-const getAlunosPorCurso = function (cursoEscolhido) {
-    let novoJson = {}
-    let novoArray = []
-    let status = false
-    let cursoSigla = cursoEscolhido
-
-    listaAlunos.alunos.forEach(function (aluno) {
-        aluno.curso.forEach(function (curso) {
-            if (curso.sigla.toUpperCase() == cursoSigla.toUpperCase()) {
-                let jsonAluno = {}
-                jsonAluno.foto = aluno.foto,
-                    jsonAluno.nome = aluno.nome,
-                    jsonAluno.sexo = aluno.sexo,
-                    jsonAluno.matricula = aluno.matricula,
-                    jsonAluno.curso = curso.nome,
-                    jsonAluno.sigla = curso.sigla
-                    jsonAluno.status = aluno.status
-                    novoArray.push(jsonAluno)
-            }
-            status = true
-        })
-    })
-    novoJson.alunos = novoArray
 
     if (status == true) {
         return novoJson
@@ -140,34 +108,54 @@ const getAlunosPorCurso = function (cursoEscolhido) {
     }
 }
 
-const getAlunosPorStatus = function (statusAluno) {
-    let novoJson = {}
-    let novoArray = []
-    let situacao = false
-    let status = statusAluno
+const getAlunosPorCurso = (curso, listaAlunos) => {
+    const cursoUpper = curso.toUpperCase();
+    const alunoJson = {};
+    const alunosArray = [];
+    let status = false;
 
-    listaAlunos.alunos.forEach(function (aluno) {
-        if (aluno.status.toUpperCase() == status.toUpperCase()) {
-            let jsonAluno = {}
-            jsonAluno.foto = aluno.foto,
-                jsonAluno.nome = aluno.nome,
-                jsonAluno.sexo = aluno.sexo,
-                jsonAluno.matricula = aluno.matricula,
-                jsonAluno.status = aluno.status
-                jsonAluno.curso = aluno.curso[0].nome
-                jsonAluno.dataConclusao = aluno.curso[0].conclusao
-                novoArray.push(jsonAluno)
+    listaAlunos.forEach(aluno => {
+        let alunos = {};
+        if (aluno.curso[0].sigla.toUpperCase() == cursoUpper) {
+            if (cursoUpper == "DS") {
+                alunoJson.NomeCurso = "Técnico em Desenvolvimento de Sistemas"
+            } else {
+                alunoJson.NomeCurso = "Técnico em Redes de Computadores"
+            }
+            alunos = aluno
+            alunosArray.push(alunos);
+            status = true;
+
         }
-       
-        situacao = true
     })
-    novoJson.alunos = novoArray
 
-    if (situacao == true) {
-        return novoJson
+    if (status) {
+        alunoJson.aluno = alunosArray
+        return alunoJson
     } else {
-        return situacao
+        return status;
     }
+
+}
+
+const getAlunosPorStatus = (statusAluno, listaAlunos) => {
+    const statusAlunoUpper = statusAluno.toUpperCase()
+    const alunoJson = {};
+    const alunosArray = [];
+    let status = false;
+
+    listaAlunos.forEach(aluno => {
+        let alunos = {};
+        if (aluno.status.toUpperCase() == statusAlunoUpper) {
+            alunos = aluno;
+            alunosArray.push(aluno);
+            status = true;
+
+        }
+    })
+
+    alunoJson.aluno = alunosArray
+    return alunoJson
 }
 
 module.exports = {
