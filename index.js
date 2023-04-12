@@ -50,7 +50,7 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
-            alunos = funcoes.getAlunosStatus(status, listaDeAlunos.alunos)
+            alunos = funcoes.getAlunosPorStatus(status, listaDeAlunos.alunos)
         }
 
         if (alunos) {
