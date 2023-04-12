@@ -40,36 +40,58 @@ app.get('/v1/lion-school/alunos', cors(), async function (request, response, nex
     let dadosAluno = {}
     let statusCode
     let alunos
-
     let status = request.query.status
     let curso = request.query.curso
 
-    if (curso) {
+    //Filtrar por status
+    if (status != undefined && curso == undefined) {
 
-        if (curso == '' || curso == undefined || !isNaN(curso)) {
-            statusCode = 400
-            dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
-        } else {
-            alunos = funcoes.getAlunosPorCurso(curso)
-        }
-
-    } else if (status) {
-
-        if (status == '' || status == undefined || !isNaN(status)) {
+        if (status == '' || !isNaN(status)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
             alunos = funcoes.getAlunosPorStatus(status)
         }
 
-    } else if (status, curso) {
+        if (alunos) {
+            statusCode = 200
+            dadosAluno = alunos
+        } else {
+            statusCode = 400
+        }
 
-        if (status == '' || curso == '' || status == undefined || curso == undefined || !isNaN(status) || !isNaN(curso)) {
+    //Filtrar por curso
+    } else if (curso != undefined && status == undefined) {
+
+        if (curso == '' || !isNaN(curso)) {
+            statusCode = 400
+            dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
+        } else {
+            alunos = funcoes.getAlunosPorCurso(curso)
+        }
+
+        if (alunos) {
+            statusCode = 200
+            dadosAluno = alunos
+        } else {
+            statusCode = 400
+        }
+
+    } else if (curso != undefined && status != undefined) {
+
+        if (status == '' || curso == '' || !isNaN(status) || !isNaN(curso)) {
             statusCode = 400
             dadosAluno.message = 'Não foi possivel processar pois os dados de entrada que foram enviados não corresponde ao exigido, confira o valor, pois não pode ser vazio e precisa ser caracteres'
         } else {
             alunos = funcoes.getAlunosPorStatus(status)
             alunos = funcoes.getAlunosPorCurso(curso)
+        }
+
+        if (alunos) {
+            statusCode = 200
+            dadosAluno = alunos
+        } else {
+            statusCode = 400
         }
 
     } else {
