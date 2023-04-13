@@ -12,7 +12,6 @@ const { query } = require('express')
 
 const funcoes = require('./modulo/functions.js')
 const listaDeAlunos = require('./modulo/alunos.js')
-const listaCursos = require('./modulo/cursos.js');
 
 app.use((request, response, next) => {
     response.header('Access-Control-Allow-Origin', '*')

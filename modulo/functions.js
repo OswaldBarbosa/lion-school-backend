@@ -4,6 +4,7 @@
  * Autor: Mateus Alves da Silva
  * Versão: 1.0
  *****************************/
+
 var listaAlunos = require('./alunos.js')
 var listaCursos = require('./cursos.js')
 
@@ -108,7 +109,7 @@ const getDetalhesAluno = function (matriculaAluno) {
     }
 }
 
-const getAlunosPorCurso = (curso, listaAlunos) => {
+const getAlunosPorCurso = (curso) => {
     const cursoUpper = curso.toUpperCase();
     const alunoJson = {};
     const alunosArray = [];
@@ -138,7 +139,7 @@ const getAlunosPorCurso = (curso, listaAlunos) => {
 
 }
 
-const getAlunosPorStatus = (statusAluno, listaAlunos) => {
+const getAlunosPorStatus = (statusAluno) => {
     const statusAlunoUpper = statusAluno.toUpperCase()
     const alunoJson = {};
     const alunosArray = [];
