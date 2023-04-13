@@ -109,7 +109,7 @@ const getDetalhesAluno = function (matriculaAluno) {
     }
 }
 
-const getAlunosPorCurso = (curso) => {
+const getAlunosPorCurso = (curso, listaAlunos) => {
     const cursoUpper = curso.toUpperCase();
     const alunoJson = {};
     const alunosArray = [];
@@ -139,7 +139,7 @@ const getAlunosPorCurso = (curso) => {
 
 }
 
-const getAlunosPorStatus = (statusAluno) => {
+const getAlunosPorStatus = (statusAluno, listaAlunos) => {
     const statusAlunoUpper = statusAluno.toUpperCase()
     const alunoJson = {};
     const alunosArray = [];
