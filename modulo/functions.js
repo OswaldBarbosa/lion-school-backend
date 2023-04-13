@@ -67,14 +67,13 @@ const getAlunosMatriculados = function () {
 
 const getDetalhesAluno = function (matriculaAluno) {
     let novoJson = {}
-    let novoArray = []
     let arrayDisciplinas = []
     let status = false
     let matricula = matriculaAluno
+    let jsonAluno = {}
 
     listaAlunos.alunos.forEach(function (aluno) {
         if (aluno.matricula == matricula) {
-            let jsonAluno = {}
             jsonAluno.foto = aluno.foto,
                 jsonAluno.nome = aluno.nome,
                 jsonAluno.matricula = aluno.matricula,
@@ -95,15 +94,12 @@ const getDetalhesAluno = function (matriculaAluno) {
                 })
                 jsonAluno.disciplinas = arrayDisciplinas
             })
-            novoArray.push(jsonAluno)
             status = true
         }
     })
 
-    novoJson.aluno = novoArray
-
     if (status == true) {
-        return novoJson
+        return jsonAluno
     } else {
         return status
     }
