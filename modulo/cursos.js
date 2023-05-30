@@ -2,13 +2,13 @@ var cursos = [
     {
         "nome"  :   "001 - Técnico em Desenvolvimento de Sistemas",
         "sigla" :   "DS",
-        "icone" :   "./img/ds.png",
+        "icone" :   "https://cdn-icons-png.flaticon.com/512/59/59118.png",
         "carga" :   "1200"
     },
     {
         "nome"  :   "002 - Técnico em Redes de Computadores",
         "sigla" :   "RDS",
-        "icone" :   "./img/redes.png",
+        "icone" :   "https://cdn-icons-png.flaticon.com/512/182/182385.png`",
         "carga" :   "1200"
     }
 ];
