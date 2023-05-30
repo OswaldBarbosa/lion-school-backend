@@ -37,7 +37,8 @@ const getCursos = function () {
         jsonInfo.nome = itemCurso.nome,
             jsonInfo.sigla = itemCurso.sigla,
             jsonInfo.icone = itemCurso.icone,
-            jsonInfo.carga = itemCurso.carga
+            jsonInfo.carga = itemCurso.carga,
+            jsonInfo.descricao = itemCurso.descricao
 
         novoArray.push(jsonInfo)
     })
