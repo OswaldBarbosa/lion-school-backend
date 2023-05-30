@@ -8,7 +8,7 @@ var cursos = [
     {
         "nome"  :   "002 - Técnico em Redes de Computadores",
         "sigla" :   "RDS",
-        "icone" :   "https://cdn-icons-png.flaticon.com/512/182/182385.png`",
+        "icone" :   "https://cdn-icons-png.flaticon.com/512/182/182385.png",
         "carga" :   "1200"
     }
 ];
