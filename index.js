@@ -133,6 +133,7 @@ app.get('/v1/lion-school/aluno/:matricula', cors(), async function (request, res
     response.status(statusCode)
 })
 
+
 app.listen(8080, function () {
     console.log('Servidor aguardando requisições na porta 8080.')
 })
